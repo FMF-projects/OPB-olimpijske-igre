@@ -7,11 +7,10 @@ from pathlib import Path
 leta = ["/rio-2016", "/london-2012", "/beijing-2008", "/athens-2004", 
         "/sydney-2000", "/atlanta-1996", "/barcelona-1992", "/seoul-1988",
         "/los-angeles-1984", "/moscow-1980", "/montreal-1976", "/munich-1972",
-        "/mexico-1968", "/tokyo-1964", "/rome-1960", "/melbourne-stockholm-1956"]
-        #,
-        #"/helsinki-1952", "/london-1948", "/berlin-1936", "/los-angeles-1932",
-        #"/amsterdam-1928", "/paris-1924", "/antwerp-1920", "/stockholm-1912",
-        #"/london-1908", "/st-louis-1904", "/paris-1900", "/athens-1896"]
+        "/mexico-1968", "/tokyo-1964", "/rome-1960", "/melbourne-stockholm-1956",
+        "/helsinki-1952", "/london-1948", "/berlin-1936", "/los-angeles-1932",
+        "/amsterdam-1928", "/paris-1924", "/antwerp-1920", "/stockholm-1912",
+        "/london-1908", "/st-louis-1904", "/paris-1900", "/athens-1896"]
 sport = "/athletics"
 discipline = ["/10000m-men", "/100m-men", "/110m-hurdles-men", "/1500m-men",
               "/200m-men", "/20km-walk-men", "/3000m-steeplechase-men",
@@ -42,23 +41,26 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
             vsebina = f.read()
 
             for tekmovalec in re.finditer(
-                r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
-                r'.+?<strong class="name">(?P<ime>.+?)</strong>'
+                r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
+                r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
+                #r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
                 r'.+?<span.*?>(?P<drzava>\D{3})</span>'
                 r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
             ,vsebina, flags=re.DOTALL):
                 
                 mesto = tekmovalec.group('mesto')
-                if len(mesto) > 5:
-                    mesto = ""
-                elif mesto == 'G':
-                    mesto = '1.'
-                elif mesto == 'S':
-                    mesto = '2.'
-                elif mesto == 'B':
-                    mesto = '3.'
-                mesto = mesto.strip(".")
-                mesto = mesto.strip("\n")    
+                x = re.search('\d', mesto)
+                if x:
+                    mesto = x.group()
+                else:
+                    if re.search('G', mesto):
+                        mesto = '1'
+                    elif re.search('S', mesto):
+                        mesto = '2'
+                    elif re.search('B', mesto):
+                        mesto = '3'
+                    else:
+                        mesto = ''  
 
                 ime = tekmovalec.group('ime')
                 ime = ime.replace("-", " ")
@@ -152,10 +154,11 @@ def preberi_podatke():
                 podatki_skupine(dat, olimpijske, disciplina)
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
+            
+            print(olimpijske, disciplina)
 
 
 rezultati = []
 #prenesi_html()
-#preberi_podatke()
+preberi_podatke()
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-
