@@ -16,7 +16,7 @@ discipline = ["/10000m-men", "/100m-men", "/110m-hurdles-men", "/1500m-men",
               "/200m-men", "/20km-walk-men", "/3000m-steeplechase-men",
               "/400m-hurdles-men", "/400m-men", 
               
-              #"/4x100m-relay-men", "/4x400m-relay-men", 
+              "/4x100m-relay-men", "/4x400m-relay-men", 
               "/5000m-men", "/50km-walk-men", "/800m-men",
               "/decathlon-men", "/discus-throw-men", "/hammer-throw-men",
               "/high-jump-men", "/javelin-throw-men", "/long-jump-men",
@@ -25,13 +25,13 @@ discipline = ["/10000m-men", "/100m-men", "/110m-hurdles-men", "/1500m-men",
               "/10000m-women", "/100m-hurdles-women", "/100m-women", 
               "/1500m-women", "/200m-women", "/20km-race-walk-women",
               "/3000m-steeplechase-women", "/400m-hurdles-women", "/400m-women",
-              #"/4x100m-relay-women", "/4x400m-relay-women", 
+              "/4x100m-relay-women", "/4x400m-relay-women", 
               "/5000m-women",
               "/800m-women", "/discus-throw-women", "/hammer-throw-women",
               "/heptathlon-women", "/high-jump-women", "/javelin-throw-women",
               "/long-jump-women", "/marathon-women", "/pole-vault-women",
               "/shot-put-women", "/triple-jump-women"]
-mostva = ["/4x100m-relay-men", "/4x100m-relay-women"]
+mostva = ["/4x100m-relay-men", "/4x100m-relay-women", "/4x400m-relay-men", "/4x400m-relay-women"]
 osnovni_naslov = "https://www.olympic.org"
 
 
@@ -94,7 +94,7 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
             for tekmovalec in re.finditer(
                 r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
                 r'.+?<strong class="name">(?P<ime>.+?)</strong>'
-                r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
+                r'.+?<td class="col3">(?P<rezultat>.+?)?</td>.+?</tr>'
             ,vsebina, flags=re.DOTALL):
                 
                 mesto = tekmovalec.group('mesto')

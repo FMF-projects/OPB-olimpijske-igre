@@ -24,7 +24,7 @@ def shrani(url, ime_datoteke, vsili_prenos=False):
         print('stran ne obstaja!')
     else:
         pripravi_imenik(ime_datoteke)
-        with open(ime_datoteke, 'w', encoding="utf8") as datoteka:
+        with open(ime_datoteke, 'w', encoding="utf-8") as datoteka:
             datoteka.write(r.text)
             print('shranjeno!')
 
@@ -44,7 +44,7 @@ def datoteke(imenik):
 def zapisi_tabelo(slovarji, imena_polj, ime_datoteke):
     '''Iz seznama slovarjev ustvari CSV datoteko z glavo.'''
     pripravi_imenik(ime_datoteke)
-    with open(ime_datoteke, 'w', encoding="utf8") as csv_dat:
+    with open(ime_datoteke, 'w', encoding="utf-8") as csv_dat:
         writer = csv.DictWriter(csv_dat, fieldnames=imena_polj)
         writer.writeheader()
         for slovar in slovarji:
