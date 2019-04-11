@@ -49,7 +49,7 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
             ,vsebina, flags=re.DOTALL):
                 
                 mesto = tekmovalec.group('mesto')
-                x = re.search('\d', mesto)
+                x = re.search('\d+', mesto)
                 if x:
                     mesto = x.group()
                 else:
@@ -127,7 +127,7 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
                 nastop['disciplina'] = disciplina
                 nastop['mesto'] = mesto
                 nastop['ime'] = ime
-                nastop['drzava'] = ""
+                nastop['drzava'] = "" #TODO dodaj kratico
                 nastop['rezultat'] = rezultat
                 rezultati.append(nastop)
 
@@ -155,10 +155,10 @@ def preberi_podatke():
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
             
-            print(olimpijske, disciplina)
+            #print(olimpijske, disciplina)
 
 
 rezultati = []
 #prenesi_html()
 preberi_podatke()
-#orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
+orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
