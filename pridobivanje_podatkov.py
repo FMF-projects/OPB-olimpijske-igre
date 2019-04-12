@@ -38,8 +38,8 @@ osnovni_naslov = "https://www.olympic.org"
 
 def podatki_posameznik(datoteka, olimpijske, disciplina):
 
-        with open(datoteka, encoding='utf-8') as f:
-        #with open(str(datoteka), encoding='utf-8') as f:
+        #with open(datoteka, encoding='utf-8') as f:
+        with open(str(datoteka), encoding='utf-8') as f:
             vsebina = f.read()
 
             for tekmovalec in re.finditer(
@@ -90,8 +90,8 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
 
 def seznam_tekmovalcev(datoteka):
 
-    with open(datoteka, encoding='utf-8') as f:
-    #with open(str(datoteka), encoding='utf-8') as f:
+    #with open(datoteka, encoding='utf-8') as f:
+    with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
         html = []
@@ -108,8 +108,8 @@ def seznam_tekmovalcev(datoteka):
 
 def podatki_skupine(datoteka, olimpijske, disciplina):
 
-        with open(datoteka, encoding='utf-8') as f:
-        #with open(str(datoteka), encoding='utf-8') as f:
+        #with open(datoteka, encoding='utf-8') as f:
+        with open(str(datoteka), encoding='utf-8') as f:
             vsebina = f.read()
 
             for tekmovalec in re.finditer(
@@ -197,7 +197,7 @@ def preberi_podatke():
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
             
-            #print(olimpijske, disciplina)
+            print(olimpijske, disciplina)
 
 
 rezultati = []
