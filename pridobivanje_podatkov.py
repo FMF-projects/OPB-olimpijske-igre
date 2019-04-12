@@ -1,6 +1,7 @@
 import orodja
 import re
 import unicodedata
+import os
 from pathlib import Path
 
 
@@ -38,6 +39,7 @@ osnovni_naslov = "https://www.olympic.org"
 def podatki_posameznik(datoteka, olimpijske, disciplina):
 
         with open(datoteka, encoding='utf-8') as f:
+        #with open(str(datoteka), encoding='utf-8') as f:
             vsebina = f.read()
 
             for tekmovalec in re.finditer(
@@ -86,9 +88,28 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
                 nastop['rezultat'] = rezultat
                 rezultati.append(nastop)
 
+def seznam_tekmovalcev(datoteka):
+
+    with open(datoteka, encoding='utf-8') as f:
+    #with open(str(datoteka), encoding='utf-8') as f:
+        vsebina = f.read()
+
+        html = []
+        for tekmovalec in re.finditer(
+                r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
+                r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
+                # r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
+                r'.+?<span.*?>(?P<drzava>\D{3})</span>'
+                r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
+                , vsebina, flags=re.DOTALL):
+
+            html.append(tekmovalec.group('ime'))
+    return html
+
 def podatki_skupine(datoteka, olimpijske, disciplina):
 
         with open(datoteka, encoding='utf-8') as f:
+        #with open(str(datoteka), encoding='utf-8') as f:
             vsebina = f.read()
 
             for tekmovalec in re.finditer(
@@ -138,6 +159,27 @@ def prenesi_html():
              datoteka = "rezultati_{}_{}.html".format(olimpijske, disciplina)
              orodja.shrani(naslov, datoteka)
 
+def prenesi_html_tekmovalca():
+    for olimpijske in leta:
+        for disc in discipline:
+
+            disciplina = disc
+
+            mapa = Path("rezultati_{}_".format(olimpijske))
+            # print(mapa)
+            dat = mapa / "{}.html".format(disc[1:])
+            #print(dat)
+
+
+            if disc not in mostva:
+                for tekmovalec in seznam_tekmovalcev(dat):
+                    #print(tekmovalec)
+                    naslov = osnovni_naslov + "/" + tekmovalec
+                    #print(naslov)
+                    datoteka = "{}.html".format(tekmovalec)
+                    pot = os.path.join("tekmovalci", datoteka)
+                    orodja.shrani(naslov, pot)
+
 def preberi_podatke():
 
     for olimpijske in leta:
@@ -160,5 +202,6 @@ def preberi_podatke():
 
 rezultati = []
 #prenesi_html()
+#prenesi_html_tekmovalca()
 preberi_podatke()
-orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
+#orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
