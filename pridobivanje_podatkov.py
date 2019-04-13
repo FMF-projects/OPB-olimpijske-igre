@@ -87,6 +87,57 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
                 nastop['drzava'] = drzava
                 nastop['rezultat'] = rezultat
                 rezultati.append(nastop)
+                # print(rezultati)
+                sez.add(tekmovalec.group('ime'))
+                # print(len(sez))
+
+def posameznik_rojstni_dan(datoteka):
+
+    with open(str(datoteka), encoding='utf-8') as f:
+        vsebina = f.read()
+
+        for tekmovalec in re.finditer(
+            r'<h1 itemprop="name">(?P<ime>.+?)</h1>'
+            r'.+?<div class="frame">'
+            r'.+?<strong class="title">Born</strong>'
+            r'(?P<datum>.+?)'
+            r'</div>.+?</li>'
+            r'.+?<strong class="title">.+?</strong>'
+            r'.+?<div class="switcher">'
+        , vsebina, flags=re.DOTALL):
+
+            ime = tekmovalec.group('ime')
+            ime = ime.replace("\n", "")
+            ime = ime.title()
+
+            datum = tekmovalec.group('datum')
+            datum = datum.replace("\n", "")
+
+            #print(ime, datum)
+            nastopajoci = {}
+            nastopajoci['ime'] = ime
+            nastopajoci['datum'] = datum
+            tekmovalci.append(nastopajoci)
+            #print(tekmovalci)
+
+        for drzava in re.finditer(
+            r'<div class="profile-row">'
+            r'.+?<span>(?P<kratica>.+?)</span>'
+            r'.+?<ul class="medal-box">'
+            r'.+?<div class="frame">'
+            r'.+?<strong class="title">Country </strong>'
+            r'.+?<a itemprop="url" href="/.+?">(?P<drzava>.+?)</a>'
+            r'.+?<div class="text-box">'
+            r'.+?<div class="switcher">'
+        , vsebina, flags=re.DOTALL):
+
+            kratica = drzava.group('kratica')
+            drzava = drzava.group('drzava')
+
+            drzave_s_kratico = {}
+            drzave_s_kratico['kratica'] = kratica
+            drzave_s_kratico['drzava'] = drzava
+            drzave.append(drzave_s_kratico)
 
 def seznam_tekmovalcev(datoteka):
 
@@ -94,7 +145,6 @@ def seznam_tekmovalcev(datoteka):
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
-        html = []
         for tekmovalec in re.finditer(
                 r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
                 r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
@@ -197,11 +247,30 @@ def preberi_podatke():
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
             
-            print(olimpijske, disciplina)
+            #print(olimpijske, disciplina)
+
+    #cwd = os.getcwd()
+    #print(cwd)
+    #print(sez)
+    for tekmovalec in list(sez):
+        dat = Path("tekmovalci")
+        pot = dat / "{}.html".format(tekmovalec)
+        posameznik_rojstni_dan(pot)
 
 
 rezultati = []
+tekmovalci = []
+sez = set()
+html = []
+drzave = []
+
 #prenesi_html()
 #prenesi_html_tekmovalca()
+
 preberi_podatke()
+
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
+#print("Zapis tabele tekmovalci.")
+#orodja.zapisi_tabelo(tekmovalci, ['ime', 'datum'], 'tekmovalci.csv')
+#print("Zapis tabele seznam_drzav.")
+#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
