@@ -32,7 +32,7 @@ discipline = ["/10000m-men", "/100m-men", "/110m-hurdles-men", "/1500m-men",
               "/heptathlon-women", "/high-jump-women", "/javelin-throw-women",
               "/long-jump-women", "/marathon-women", "/pole-vault-women",
               "/shot-put-women", "/triple-jump-women"]
-mostva = ["/4x100m-relay-men", "/4x100m-relay-women", "/4x400m-relay-men", "/4x400m-relay-women"]
+mostva = {"/4x100m-relay-men", "/4x100m-relay-women", "/4x400m-relay-men", "/4x400m-relay-women"}
 osnovni_naslov = "https://www.olympic.org"
 
 
@@ -87,9 +87,7 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
                 nastop['drzava'] = drzava
                 nastop['rezultat'] = rezultat
                 rezultati.append(nastop)
-                # print(rezultati)
                 sez.add(tekmovalec.group('ime'))
-                # print(len(sez))
 
 def posameznik_rojstni_dan(datoteka):
 
@@ -118,7 +116,7 @@ def posameznik_rojstni_dan(datoteka):
             nastopajoci['ime'] = ime
             nastopajoci['datum'] = datum
             tekmovalci.append(nastopajoci)
-            #print(tekmovalci)
+
 
         for drzava in re.finditer(
             r'<div class="profile-row">'
@@ -134,10 +132,13 @@ def posameznik_rojstni_dan(datoteka):
             kratica = drzava.group('kratica')
             drzava = drzava.group('drzava')
 
-            drzave_s_kratico = {}
-            drzave_s_kratico['kratica'] = kratica
-            drzave_s_kratico['drzava'] = drzava
-            drzave.append(drzave_s_kratico)
+            #print(kratica, drzava)
+            if kratica not in drz:
+                drz.add(kratica)
+                drzave_s_kratico = {}
+                drzave_s_kratico['kratica'] = kratica
+                drzave_s_kratico['drzava'] = drzava
+                drzave.append(drzave_s_kratico)
 
 def seznam_tekmovalcev(datoteka):
 
@@ -261,6 +262,7 @@ def preberi_podatke():
 rezultati = []
 tekmovalci = []
 sez = set()
+drz = set()
 html = []
 drzave = []
 
@@ -269,8 +271,9 @@ drzave = []
 
 preberi_podatke()
 
+
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
 #print("Zapis tabele tekmovalci.")
 #orodja.zapisi_tabelo(tekmovalci, ['ime', 'datum'], 'tekmovalci.csv')
 #print("Zapis tabele seznam_drzav.")
-#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
+orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
