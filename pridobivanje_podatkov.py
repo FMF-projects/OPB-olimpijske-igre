@@ -65,6 +65,8 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
                         mesto = ''  
 
                 ime = tekmovalec.group('ime')
+                if ime not in tekmovalci:
+                        tekmovalci.add(ime)
                 ime = ime.replace("-", " ")
                 ime = ime.title()
 
@@ -140,22 +142,6 @@ def posameznik_rojstni_dan(datoteka):
                 drzave_s_kratico['drzava'] = drzava
                 drzave.append(drzave_s_kratico)
 
-def seznam_tekmovalcev(datoteka):
-
-    #with open(datoteka, encoding='utf-8') as f:
-    with open(str(datoteka), encoding='utf-8') as f:
-        vsebina = f.read()
-
-        for tekmovalec in re.finditer(
-                r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
-                r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
-                # r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
-                r'.+?<span.*?>(?P<drzava>\D{3})</span>'
-                r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
-                , vsebina, flags=re.DOTALL):
-
-            html.append(tekmovalec.group('ime'))
-    return html
 
 def podatki_skupine(datoteka, olimpijske, disciplina):
 
@@ -248,7 +234,12 @@ def preberi_podatke():
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
             
-            #print(olimpijske, disciplina)
+            print(olimpijske, disciplina)
+
+
+def preberi_podatke_tekmovalcev():
+
+
 
     #cwd = os.getcwd()
     #print(cwd)
@@ -259,11 +250,18 @@ def preberi_podatke():
         posameznik_rojstni_dan(pot)
 
 
+def zapisi_tekmovalce(tekmovalci):
+
+        f = open("tekmovalci.txt", "w+", encoding='utf-8')
+        for tekmovalec in tekmovalci:
+                f.write(tekmovalec + "\n")
+        f.close()
+
+
 rezultati = []
-tekmovalci = []
+tekmovalci = set()
 sez = set()
 drz = set()
-html = []
 drzave = []
 
 #prenesi_html()
@@ -271,9 +269,8 @@ drzave = []
 
 preberi_podatke()
 
+zapisi_tekmovalce(tekmovalci)
+
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-#print("Zapis tabele tekmovalci.")
-#orodja.zapisi_tabelo(tekmovalci, ['ime', 'datum'], 'tekmovalci.csv')
-#print("Zapis tabele seznam_drzav.")
-orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
+#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
