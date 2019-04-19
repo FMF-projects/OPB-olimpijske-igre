@@ -103,6 +103,7 @@ def posameznik_rojstni_dan(datoteka, sportnik):
     so slovarji z kratico in polnim imenom drzave.
     '''
 
+    print(datoteka)
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
@@ -110,9 +111,8 @@ def posameznik_rojstni_dan(datoteka, sportnik):
             r'<div class="flag-image">'
             r'.+?<span>(?P<kratica>\w\w\w)</span>'
             r'.+?<div class="frame">'
-            r'.+?<strong class="title">Country </strong>'
-            r'.+?<a (itemprop="url" )?href="/.+?">(?P<drzava>.+?)</a>'
-            r'.+?<strong class="title">Born</strong>(?P<datum>.+?)</div>'
+            r'.+?<strong class="title">Country </strong>.+?<a.+?href="/(?P<drzava>.+?)">.+?</a>'
+            r'.+?<strong class="title">.+?</strong>(?P<datum>.+?)</div>'
             r'.+?<div class="switcher">'
         , vsebina, flags=re.DOTALL):
 
@@ -123,25 +123,22 @@ def posameznik_rojstni_dan(datoteka, sportnik):
             datum = tekmovalec.group('datum')
             datum = datum.replace("\n", "")
 
-            #print(ime, datum)
             nastopajoci = {}
             nastopajoci['ime'] = ime
-            nastopajoci['datum'] = datum
+            nastopajoci['datum'] = datum[:11] # nekateri imajo naveden še datum smrti
             roj_dan_tekmovalcev.append(nastopajoci)
 
             kratica = tekmovalec.group('kratica')
             drzava = tekmovalec.group('drzava')
-            #drzava = drzava.replace("-", " ")
-            #drzava = drzava.title()
+            drzava = drzava.replace("-", " ")
+            drzava = drzava.title()
 
-            #print(kratica, drzava)
             if kratica not in drz:
                 drz.add(kratica)
                 drzave_s_kratico = {}
                 drzave_s_kratico['kratica'] = kratica
                 drzave_s_kratico['drzava'] = drzava
                 drzave.append(drzave_s_kratico)
-        #print(len(roj_dan_tekmovalcev))
 
 
 def podatki_skupine(datoteka, olimpijske, disciplina):
@@ -267,7 +264,7 @@ def preberi_podatke_tekmovalcev():
         dat = Path("tekmovalci")
         pot = dat / "{}.html".format(tekmovalec)
         posameznik_rojstni_dan(pot, tekmovalec)
-        print(pot)
+        #print(pot)
     #print(len(tekm))
     #print(len(mnozica_tekmovalcev))
 
@@ -297,8 +294,8 @@ drzave = []
 #preberi_podatke()
 
 #zapisi_tekmovalce(tekmovalci)
-#preberi_podatke_tekmovalcev()
+preberi_podatke_tekmovalcev()
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-#orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
-#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
+orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
+orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
