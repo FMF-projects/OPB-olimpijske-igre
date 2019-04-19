@@ -297,8 +297,8 @@ drzave = []
 #preberi_podatke()
 
 #zapisi_tekmovalce(tekmovalci)
-preberi_podatke_tekmovalcev()
+#preberi_podatke_tekmovalcev()
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
+#orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
 #orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
