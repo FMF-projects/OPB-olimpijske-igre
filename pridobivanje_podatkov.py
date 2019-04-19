@@ -37,77 +37,87 @@ osnovni_naslov = "https://www.olympic.org"
 
 
 def podatki_posameznik(datoteka, olimpijske, disciplina):
+    '''
+    Funkcija sprejme ime datoteke, olimpijske igre in disciplino in naredi seznam
+    slovarjev v katerih so rezultati tekmovalca.
+    '''
 
-        #with open(datoteka, encoding='utf-8') as f:
-        with open(str(datoteka), encoding='utf-8') as f:
-            vsebina = f.read()
+    #with open(datoteka, encoding='utf-8') as f:
+    with open(str(datoteka), encoding='utf-8') as f:
+        vsebina = f.read()
 
-            for tekmovalec in re.finditer(
-                r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
-                r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
-                #r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
-                r'.+?<span.*?>(?P<drzava>\D{3})</span>'
-                r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
-            ,vsebina, flags=re.DOTALL):
+        for tekmovalec in re.finditer(
+            r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
+            r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
+            #r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
+            r'.+?<span.*?>(?P<drzava>\D{3})</span>'
+            r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
+        ,vsebina, flags=re.DOTALL):
                 
-                mesto = tekmovalec.group('mesto')
-                x = re.search('\d+', mesto)
-                if x:
-                    mesto = x.group()
+            mesto = tekmovalec.group('mesto')
+            x = re.search('\d+', mesto)
+            if x:
+                mesto = x.group()
+            else:
+                if re.search('G', mesto):
+                    mesto = '1'
+                elif re.search('S', mesto):
+                    mesto = '2'
+                elif re.search('B', mesto):
+                    mesto = '3'
                 else:
-                    if re.search('G', mesto):
-                        mesto = '1'
-                    elif re.search('S', mesto):
-                        mesto = '2'
-                    elif re.search('B', mesto):
-                        mesto = '3'
-                    else:
-                        mesto = ''  
+                    mesto = ''
 
-                ime = tekmovalec.group('ime')
-                if ime not in tekmovalci:
-                        tekmovalci.add(ime)
-                ime = ime.replace("-", " ")
-                ime = ime.title()
+            ime = tekmovalec.group('ime')
+            if ime not in tekmovalci:
+                    tekmovalci.add(ime)
+            ime = ime.replace("-", " ")
+            ime = ime.title()
 
-                drzava = tekmovalec.group('drzava')
+            drzava = tekmovalec.group('drzava')
 
-                rezultat = tekmovalec.group('rezultat')
-                rezultat = rezultat.strip()
-                rezultat = rezultat.replace("\n", "")
+            rezultat = tekmovalec.group('rezultat')
+            rezultat = rezultat.strip()
+            rezultat = rezultat.replace("\n", "")
 
-                igre = olimpijske[1:]
-                igre = igre.replace("-", " ")
-                igre = igre.capitalize()
+            igre = olimpijske[1:]
+            igre = igre.replace("-", " ")
+            igre = igre.capitalize()
 
-                # za vsakega nastopajočega ustvarimo slovar
-                nastop = {}
-                nastop['igre'] = igre
-                nastop['disciplina'] = disciplina
-                nastop['mesto'] = mesto
-                nastop['ime'] = ime
-                nastop['drzava'] = drzava
-                nastop['rezultat'] = rezultat
-                rezultati.append(nastop)
-                sez.add(tekmovalec.group('ime'))
+            # za vsakega nastopajočega ustvarimo slovar
+            nastop = {}
+            nastop['igre'] = igre
+            nastop['disciplina'] = disciplina
+            nastop['mesto'] = mesto
+            nastop['ime'] = ime
+            nastop['drzava'] = drzava
+            nastop['rezultat'] = rezultat
+            rezultati.append(nastop)
+            sez.add(tekmovalec.group('ime'))
 
-def posameznik_rojstni_dan(datoteka):
+
+def posameznik_rojstni_dan(datoteka, sportnik):
+    '''
+    Funkcija sprejme ime datotekein ime tekmovalca in naredi dva seznama.
+    V enem so slovarji z imenom tekmovalca in njegovim rojstnim dnem. V drugem
+    so slovarji z kratico in polnim imenom drzave.
+    '''
 
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
         for tekmovalec in re.finditer(
-            r'<h1 itemprop="name">(?P<ime>.+?)</h1>'
+            r'<div class="flag-image">'
+            r'.+?<span>(?P<kratica>\w\w\w)</span>'
             r'.+?<div class="frame">'
-            r'.+?<strong class="title">Born</strong>'
-            r'(?P<datum>.+?)'
-            r'</div>.+?</li>'
-            r'.+?<strong class="title">.+?</strong>'
+            r'.+?<strong class="title">Country </strong>'
+            r'.+?<a (itemprop="url" )?href="/.+?">(?P<drzava>.+?)</a>'
+            r'.+?<strong class="title">Born</strong>(?P<datum>.+?)</div>'
             r'.+?<div class="switcher">'
         , vsebina, flags=re.DOTALL):
 
-            ime = tekmovalec.group('ime')
-            ime = ime.replace("\n", "")
+            ime = sportnik
+            ime = ime.replace("-", " ")
             ime = ime.title()
 
             datum = tekmovalec.group('datum')
@@ -117,22 +127,12 @@ def posameznik_rojstni_dan(datoteka):
             nastopajoci = {}
             nastopajoci['ime'] = ime
             nastopajoci['datum'] = datum
-            tekmovalci.append(nastopajoci)
+            roj_dan_tekmovalcev.append(nastopajoci)
 
-
-        for drzava in re.finditer(
-            r'<div class="profile-row">'
-            r'.+?<span>(?P<kratica>.+?)</span>'
-            r'.+?<ul class="medal-box">'
-            r'.+?<div class="frame">'
-            r'.+?<strong class="title">Country </strong>'
-            r'.+?<a itemprop="url" href="/.+?">(?P<drzava>.+?)</a>'
-            r'.+?<div class="text-box">'
-            r'.+?<div class="switcher">'
-        , vsebina, flags=re.DOTALL):
-
-            kratica = drzava.group('kratica')
-            drzava = drzava.group('drzava')
+            kratica = tekmovalec.group('kratica')
+            drzava = tekmovalec.group('drzava')
+            #drzava = drzava.replace("-", " ")
+            #drzava = drzava.title()
 
             #print(kratica, drzava)
             if kratica not in drz:
@@ -141,83 +141,94 @@ def posameznik_rojstni_dan(datoteka):
                 drzave_s_kratico['kratica'] = kratica
                 drzave_s_kratico['drzava'] = drzava
                 drzave.append(drzave_s_kratico)
+        #print(len(roj_dan_tekmovalcev))
 
 
 def podatki_skupine(datoteka, olimpijske, disciplina):
+    '''
+    Funkcija sprejme ime datoteke, olimpijske igre in disciplino in naredi seznam
+    slovarjev v katerih so podatki skupine.
+    '''
 
-        #with open(datoteka, encoding='utf-8') as f:
-        with open(str(datoteka), encoding='utf-8') as f:
-            vsebina = f.read()
+    #with open(datoteka, encoding='utf-8') as f:
+    with open(str(datoteka), encoding='utf-8') as f:
+        vsebina = f.read()
 
-            for tekmovalec in re.finditer(
-                r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
-                r'.+?<strong class="name">(?P<ime>.+?)</strong>'
-                r'.+?<td class="col3">(?P<rezultat>.+?)?</td>.+?</tr>'
-            ,vsebina, flags=re.DOTALL):
+        for tekmovalec in re.finditer(
+            r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
+            r'.+?<strong class="name">(?P<ime>.+?)</strong>'
+            r'.+?<td class="col3">(?P<rezultat>.+?)?</td>.+?</tr>'
+        ,vsebina, flags=re.DOTALL):
                 
-                mesto = tekmovalec.group('mesto')
-                if len(mesto) > 5:
-                    mesto = ""
-                elif mesto == 'G':
-                    mesto = '1.'
-                elif mesto == 'S':
-                    mesto = '2.'
-                elif mesto == 'B':
-                    mesto = '3.'
-                mesto = mesto.strip(".")
-                mesto = mesto.strip("\n")    
+            mesto = tekmovalec.group('mesto')
+            if len(mesto) > 5:
+                mesto = ""
+            elif mesto == 'G':
+                mesto = '1.'
+            elif mesto == 'S':
+                mesto = '2.'
+            elif mesto == 'B':
+                mesto = '3.'
+            mesto = mesto.strip(".")
+            mesto = mesto.strip("\n")
 
-                ime = tekmovalec.group('ime')
-                ime = ime.replace("-", " ")
-                ime = ime.title()
+            ime = tekmovalec.group('ime')
+            ime = ime.replace("-", " ")
+            ime = ime.title()
 
-                rezultat = tekmovalec.group('rezultat')
-                rezultat = rezultat.strip()
-                rezultat = rezultat.replace("\n", "")
+            rezultat = tekmovalec.group('rezultat')
+            rezultat = rezultat.strip()
+            rezultat = rezultat.replace("\n", "")
 
-                igre = olimpijske[1:]
-                igre = igre.replace("-", " ")
-                igre = igre.capitalize()
+            igre = olimpijske[1:]
+            igre = igre.replace("-", " ")
+            igre = igre.capitalize()
 
-                # za vsakega nastopajočega ustvarimo slovar
-                nastop = {}
-                nastop['igre'] = igre
-                nastop['disciplina'] = disciplina
-                nastop['mesto'] = mesto
-                nastop['ime'] = ime
-                nastop['drzava'] = "" #TODO dodaj kratico
-                nastop['rezultat'] = rezultat
-                rezultati.append(nastop)
+            # za vsakega nastopajočega ustvarimo slovar
+            nastop = {}
+            nastop['igre'] = igre
+            nastop['disciplina'] = disciplina
+            nastop['mesto'] = mesto
+            nastop['ime'] = ime
+            nastop['drzava'] = "" #TODO dodaj kratico
+            nastop['rezultat'] = rezultat
+            rezultati.append(nastop)
+
 
 def prenesi_html():
-     for olimpijske in leta:
+    '''
+    Funcija za shranitev html datoteke za tekme. Sklicuje se na funkcijo
+    shrani iz datoteke orodja.
+    '''
+
+    for olimpijske in leta:
         for disciplina in discipline:
-             naslov = osnovni_naslov + olimpijske + sport + disciplina
-             datoteka = "rezultati_{}_{}.html".format(olimpijske, disciplina)
-             orodja.shrani(naslov, datoteka)
+            naslov = osnovni_naslov + olimpijske + sport + disciplina
+            datoteka = "rezultati_{}_{}.html".format(olimpijske, disciplina)
+            orodja.shrani(naslov, datoteka)
+
 
 def prenesi_html_tekmovalca():
-    for olimpijske in leta:
-        for disc in discipline:
+    '''
+    Funcija za shranitev html datoteke za vsakega tekmovalca. Sklicuje se
+    na funkcijo shrani iz datoteke orodja.
+    '''
 
-            disciplina = disc
+    for tekmovalec in tekmovalci:
+        #print(tekmovalec)
+        tekmovalec.replace('\n', '')
+        naslov = osnovni_naslov + "/" + tekmovalec
+        # print(naslov)
+        datoteka = "{}.html".format(tekmovalec)
+        pot = os.path.join("tekmovalci", datoteka)
+        orodja.shrani(naslov, pot)
 
-            mapa = Path("rezultati_{}_".format(olimpijske))
-            # print(mapa)
-            dat = mapa / "{}.html".format(disc[1:])
-            #print(dat)
-
-
-            if disc not in mostva:
-                for tekmovalec in seznam_tekmovalcev(dat):
-                    #print(tekmovalec)
-                    naslov = osnovni_naslov + "/" + tekmovalec
-                    #print(naslov)
-                    datoteka = "{}.html".format(tekmovalec)
-                    pot = os.path.join("tekmovalci", datoteka)
-                    orodja.shrani(naslov, pot)
 
 def preberi_podatke():
+    '''
+    Funkcija shrani rezultate tekmovalcev v seznam s pomocjo zgornjih dveh
+    funkcij: podatki_posameznik in podatki_skupine.
+    '''
 
     for olimpijske in leta:
         for disc in discipline:
@@ -238,39 +249,56 @@ def preberi_podatke():
 
 
 def preberi_podatke_tekmovalcev():
+    '''
+    Funkcija shrani rojstne dneve tekmovalcev in kratice in polna imena drzav v
+    seznam s pomocjo zgornje funkcije posameznik_rojstni_dan.
+    '''
 
+    tekm = set()
+    f = open('tekmovalci.txt', 'r')
+    for line in f:
+        tekm.add(line)
+    #print(tekm)
+    f.close()
 
+    mnozica_tekmovalcev = [tekmovalec[:-1] for tekmovalec in tekm]
 
-    #cwd = os.getcwd()
-    #print(cwd)
-    #print(sez)
-    for tekmovalec in list(sez):
+    for tekmovalec in mnozica_tekmovalcev:
         dat = Path("tekmovalci")
         pot = dat / "{}.html".format(tekmovalec)
-        posameznik_rojstni_dan(pot)
+        posameznik_rojstni_dan(pot, tekmovalec)
+        print(pot)
+    #print(len(tekm))
+    #print(len(mnozica_tekmovalcev))
 
 
 def zapisi_tekmovalce(tekmovalci):
+    '''
+    Funkcija v datoteko tekmovalci.txt zapise vsa imena tekmovalcev iz seznama.
+    '''
 
-        f = open("tekmovalci.txt", "w+", encoding='utf-8')
-        for tekmovalec in tekmovalci:
-                f.write(tekmovalec + "\n")
-        f.close()
+    f = open("tekmovalci.txt", "w+", encoding='utf-8')
+    for tekmovalec in tekmovalci:
+        f.write(tekmovalec + "\n")
+    f.close()
 
 
 rezultati = []
 tekmovalci = set()
+roj_dan_tekmovalcev = []
 sez = set()
 drz = set()
 drzave = []
 
+
 #prenesi_html()
 #prenesi_html_tekmovalca()
 
-preberi_podatke()
+#preberi_podatke()
 
-zapisi_tekmovalce(tekmovalci)
-
+#zapisi_tekmovalce(tekmovalci)
+preberi_podatke_tekmovalcev()
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
+orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
 #orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
