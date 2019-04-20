@@ -109,11 +109,12 @@ def posameznik_rojstni_dan(datoteka, sportnik):
 
         for tekmovalec in re.finditer(
             r'<div class="flag-image">'
-            r'.+?<span>(?P<kratica>\w\w\w)</span>'
+            r'.+?<span>(?P<kratica>\D\D\D)</span>'
             r'.+?<div class="frame">'
-            r'.+?<strong class="title">Country </strong>.+?<a.+?href="/(?P<drzava>.+?)">.+?</a>'
+            r'.+?<strong class="title">Country </strong>.+?'
+            r'<a.+?href="/(?P<drzava>\D+?)">.+?</a>'
             r'.+?<strong class="title">.+?</strong>(?P<datum>.+?)</div>'
-            r'.+?<div class="switcher">'
+            #r'.+?<div class="switcher">'
         , vsebina, flags=re.DOTALL):
 
             ime = sportnik
@@ -125,8 +126,12 @@ def posameznik_rojstni_dan(datoteka, sportnik):
 
             nastopajoci = {}
             nastopajoci['ime'] = ime
-            nastopajoci['datum'] = datum[:11] # nekateri imajo naveden še datum smrti
+            if '01 Jan 0001' == datum[:11]:
+                nastopajoci['datum'] = ''
+            else:
+                nastopajoci['datum'] = datum[:11] # nekateri imajo naveden še datum smrti
             roj_dan_tekmovalcev.append(nastopajoci)
+            #print(nastopajoci)
 
             kratica = tekmovalec.group('kratica')
             drzava = tekmovalec.group('drzava')
