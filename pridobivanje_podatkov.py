@@ -112,7 +112,7 @@ def posameznik_rojstni_dan(datoteka, sportnik):
             r'.+?<span>(?P<kratica>\D\D\D)</span>'
             r'.+?<div class="frame">'
             r'.+?<strong class="title">Country </strong>.+?'
-            r'<a (itemprop="url" )?href="/(?P<drzava>\D+?)">.+?</a>'
+            r'<a (itemprop="url" )?href="/(?P<drzava>.+?)">.+?</a>'
             r'.+?<strong class="title">(Born|Lived)</strong>(?P<datum>.+?)</div>'
             #r'.+?<div class="switcher">'
         , vsebina, flags=re.DOTALL):
@@ -299,8 +299,8 @@ drzave = []
 #preberi_podatke()
 
 #zapisi_tekmovalce(tekmovalci)
-#preberi_podatke_tekmovalcev()
+preberi_podatke_tekmovalcev()
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-#orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
-#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
+orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
+orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
