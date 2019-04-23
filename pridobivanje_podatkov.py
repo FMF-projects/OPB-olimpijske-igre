@@ -42,14 +42,13 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
     slovarjev v katerih so rezultati tekmovalca.
     '''
 
-    #with open(datoteka, encoding='utf-8') as f:
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
+        stevec = 0
         for tekmovalec in re.finditer(
             r'<tr>.+?<td class="col1">(?P<mesto>.+?)</td>.+?<td class="col2">'
             r'.+?<a href="/(?P<ime>.+?)">.+?<span class="picture">'
-            #r'.+?<strong .*?class="name">(?P<ime>.+?)</strong>'
             r'.+?<span.*?>(?P<drzava>\D{3})</span>'
             r'.+?<td class="col3">(?P<rezultat>.+?)</td>.+?</tr>'
         ,vsebina, flags=re.DOTALL):
@@ -67,6 +66,10 @@ def podatki_posameznik(datoteka, olimpijske, disciplina):
                     mesto = '3'
                 else:
                     mesto = ''
+            
+            stevec += 1
+            if str(stevec) != mesto or mesto == '':
+                continue
 
             ime = tekmovalec.group('ime')
             if ime not in tekmovalci:
@@ -102,8 +105,6 @@ def posameznik_rojstni_dan(datoteka, sportnik):
     V enem so slovarji z imenom tekmovalca in njegovim rojstnim dnem. V drugem
     so slovarji z kratico in polnim imenom drzave.
     '''
-
-    print(datoteka)
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
@@ -114,7 +115,6 @@ def posameznik_rojstni_dan(datoteka, sportnik):
             r'.+?<strong class="title">Country </strong>.+?'
             r'<a (itemprop="url" )?href="/(?P<drzava>.+?)">.+?</a>'
             r'.+?<strong class="title">(Born|Lived)</strong>(?P<datum>.+?)</div>'
-            #r'.+?<div class="switcher">'
         , vsebina, flags=re.DOTALL):
 
             ime = sportnik
@@ -123,15 +123,21 @@ def posameznik_rojstni_dan(datoteka, sportnik):
 
             datum = tekmovalec.group('datum')
             datum = datum.replace("\n", "")
+            
+            meseci = {'Jan':'01', 'Feb':'02', 'Mar':'03', 'Apr':'04', 'May':'05', 
+                      'Jun':'06', 'Jul':'07', 'Aug':'08', 'Sep':'09', 'Oct':'10', 
+                      'Nov':'11', 'Dec':'12'}
+            
 
             nastopajoci = {}
             nastopajoci['ime'] = ime
             if '01 Jan 0001' == datum[:11]:
                 nastopajoci['datum'] = ''
             else:
-                nastopajoci['datum'] = datum[:11] # nekateri imajo naveden še datum smrti
+                datum = datum[:11] # nekateri imajo naveden še datum smrti
+                st = meseci[datum[3:6]]
+                nastopajoci['datum'] = datum[:2] + '.' + st + '.' + datum[-4:]
             roj_dan_tekmovalcev.append(nastopajoci)
-            #print(nastopajoci)
 
             kratica = tekmovalec.group('kratica')
             drzava = tekmovalec.group('drzava')
@@ -152,13 +158,12 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
     slovarjev v katerih so podatki skupine.
     '''
 
-    #with open(datoteka, encoding='utf-8') as f:
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
         for tekmovalec in re.finditer(
             r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
-            r'.+?<strong class="name">(?P<ime>.+?)</strong>'
+            r'.+?<div class="image">.+?<div class="flag45 (?P<drzava>.+?)">.+?<span class="mask"></span>'
             r'.+?<td class="col3">(?P<rezultat>.+?)?</td>.+?</tr>'
         ,vsebina, flags=re.DOTALL):
                 
@@ -174,9 +179,9 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
             mesto = mesto.strip(".")
             mesto = mesto.strip("\n")
 
-            ime = tekmovalec.group('ime')
-            ime = ime.replace("-", " ")
-            ime = ime.title()
+            drzava = tekmovalec.group('drzava')
+            drzava = drzava.replace("-", " ")
+            drzava = drzava.upper()
 
             rezultat = tekmovalec.group('rezultat')
             rezultat = rezultat.strip()
@@ -191,8 +196,8 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
             nastop['igre'] = igre
             nastop['disciplina'] = disciplina
             nastop['mesto'] = mesto
-            nastop['ime'] = ime
-            nastop['drzava'] = "" #TODO dodaj kratico
+            nastop['ime'] = ""
+            nastop['drzava'] = drzava
             nastop['rezultat'] = rezultat
             rezultati.append(nastop)
 
@@ -217,10 +222,8 @@ def prenesi_html_tekmovalca():
     '''
 
     for tekmovalec in tekmovalci:
-        #print(tekmovalec)
         tekmovalec.replace('\n', '')
         naslov = osnovni_naslov + "/" + tekmovalec
-        # print(naslov)
         datoteka = "{}.html".format(tekmovalec)
         pot = os.path.join("tekmovalci", datoteka)
         orodja.shrani(naslov, pot)
@@ -246,8 +249,6 @@ def preberi_podatke():
                 podatki_skupine(dat, olimpijske, disciplina)
             else:
                 podatki_posameznik(dat, olimpijske, disciplina)
-            
-            print(olimpijske, disciplina)
 
 
 def preberi_podatke_tekmovalcev():
@@ -260,7 +261,6 @@ def preberi_podatke_tekmovalcev():
     f = open('tekmovalci.txt', 'r')
     for line in f:
         tekm.add(line)
-    #print(tekm)
     f.close()
 
     mnozica_tekmovalcev = [tekmovalec[:-1] for tekmovalec in tekm]
@@ -269,9 +269,6 @@ def preberi_podatke_tekmovalcev():
         dat = Path("tekmovalci")
         pot = dat / "{}.html".format(tekmovalec)
         posameznik_rojstni_dan(pot, tekmovalec)
-        #print(pot)
-    #print(len(tekm))
-    #print(len(mnozica_tekmovalcev))
 
 
 def zapisi_tekmovalce(tekmovalci):
@@ -299,8 +296,8 @@ drzave = []
 #preberi_podatke()
 
 #zapisi_tekmovalce(tekmovalci)
-preberi_podatke_tekmovalcev()
+#preberi_podatke_tekmovalcev()
 
 #orodja.zapisi_tabelo(rezultati, ['igre', 'disciplina', 'mesto', 'ime', 'drzava', 'rezultat'], 'rezultati.csv')
-orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
-orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
+#orodja.zapisi_tabelo(roj_dan_tekmovalcev, ['ime', 'datum'], 'roj_dan_tekmovalcev.csv')
+#orodja.zapisi_tabelo(drzave, ['kratica', 'drzava'], 'seznam_drzav.csv')
