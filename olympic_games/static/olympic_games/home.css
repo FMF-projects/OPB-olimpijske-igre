@@ -1,0 +1,285 @@
+a{
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+.navbar{
+    margin-bottom: 20px;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: justify;
+    ustify-content: space-between;
+    padding: .5rem 1rem;
+}
+
+.navbar-dark .navbar-brand{
+    color: #000000;
+}
+
+.navbar-dark .navbar-toggler{
+    color: rgba(0, 0, 0,.5);
+    border-color: rgba(0, 0, 0,.1);
+}
+
+.navbar-brand{
+    display: inline-block;
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+    line-height: inherit;
+    white-space: nowrap;
+}
+
+.navbar-toggler{
+    padding: .25rem .75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.bg-dark{
+    backround-color: #343a40 !important;
+}
+
+.navbar-expand-md{
+    -ms-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+}
+
+.navbar-expand-md .navbar-toggler{
+    display: none;
+}
+
+.navbar-dark .navbar-toggler-icon{
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar-toggler-icon{
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+    background: no-repeat center center;
+    background-size: 100% 100%;
+}
+
+.navbar-collapse{
+    -ms-flex-preferred-size: 100%;
+    flex-basis: 100%;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.navbar-expand-md .navbar-collapse{
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -ms-flex-preferred-size: auto;
+    flex-basis: auto;
+}
+
+.navbar-expand-md .navbar-nav{
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.navbar-expand-md .navbar-nav .nav-link{
+    padding-right: .5rem;
+    padding-left: .5rem;
+}
+
+.navbar-nav .nav-link{
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.collapse:not(.show){
+    display:none
+}
+
+.mr.auto{
+    margin-right: auto !important;
+}
+
+.navbar-nav{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.nav-link{
+    color: #fff;
+    display: block;
+    padding: .5rem 1rem;
+}
+
+.navbar-nav .nav-link{
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.navbar-dark .navbar-nav .nav-link.disabled{
+    color: rgba(0, 0, 0,.25);
+}
+
+.nav-link.disabled{
+    color: #6c757d;
+    pointer-events: none;
+    cursor: default;
+}
+
+.navbar-dark .navbar-nav .nav-link{
+    color: rgba(0, 0, 0,.5);
+}
+
+.dropdown{
+    position: relative;
+}
+
+.dropdown-toggle{
+    white-space: nowrap;
+}
+
+.navbar-expand-md .navbar-nav .dropdown-menu{
+    position: absolute;
+}
+
+.navbar-nav .dropdown-menu{
+    position: static;
+    float: none;
+}
+
+.dropdown-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 10rem;
+    padding: .5rem 0;
+    margin: .125rem 0 0;
+    font-size: 1rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
+}
+
+.dropdown-item{
+    display: block;
+    width: 100%;
+    padding: .25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.my-2{
+    margin-top: .5rem !important;
+}
+
+.my-md-0{
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+}
+
+.form-inline{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.form-inline .form-control{
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+}
+
+.form-control{
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+input{
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+body{
+    font-family: "Arial";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-image: url(https://png2.kisspng.com/sh/f7c79d43642a6ccb52f4702948d5f66c/L0KzQYm3VME5N6hwfZH0aYP2gLBuTcIxOWkyj9t3dHX1PbFzmf1xcZR4ReVAbX3ogn72jQlueJpoRdlqbXX2PcHChf9vb5RtRd1qcnH3dX68gfQ3a5JnT6ZuM0XoSHA3WcY0O2U2SKMAMkSzQoe3U8k0OmE5RuJ3Zx==/kisspng-2018-winter-olympics-summer-olympic-games-pyeongch-karate-5ad6cab74e35e8.0963341015240260393204.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+button:not(:disabled){
+    cursor: pointer;
+}
+button{
+    -webkit-appearance: button;
+}
+button{
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    -webkit-appearance: button;
+    overflow: visible
+}
+
+ul{
+    margin-top: 0;
+}
+
+
+

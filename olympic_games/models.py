@@ -17,8 +17,8 @@ class Drzava(models.Model):
 class Tekmovalec(models.Model):
     id = models.AutoField(primary_key=True)
     ime = models.TextField(null=False)
-    drzava = models.ForeignKey(Drzava)
+    drzava = models.ForeignKey(Drzava, on_delete=models.CASCADE)
     rojstvo = models.DateField(null=True)
     mesto = models.IntegerField(null=True)
     rezultat = models.IntegerField(null=True)
-    olimpijske_igre = models.ForeignKey(OlimpijskeIgre)
+    olimpijske_igre = models.ForeignKey(OlimpijskeIgre, on_delete=models.CASCADE)
