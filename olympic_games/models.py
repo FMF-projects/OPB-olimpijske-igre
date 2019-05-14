@@ -12,7 +12,7 @@ class OlimpijskeIgre(models.Model):
 
 class Drzava(models.Model):
     kratica = models.TextField(primary_key=True)
-    ime = models.TextField(null=False)
+    ime = models.TextField()
 
 class Tekmovalec(models.Model):
     id = models.AutoField(primary_key=True)
