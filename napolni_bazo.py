@@ -1,5 +1,5 @@
 #import dj
-import atletika.models as atletikamd
+from olympic_games.models import Drzava
 import csv
 
 def zapisi_drzave():
@@ -9,7 +9,7 @@ def zapisi_drzave():
             if row != []:
                 krat, ime = row
                 #print(row)
-                d = atletikamd.Drzava(kratica=krat, drzava=ime)
+                d = Drzava(kratica=krat, ime=ime)
                 d.save()
 
-#zapisi = zapisi_drzave()
+zapisi_drzave()
