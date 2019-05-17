@@ -2,7 +2,7 @@ from django.db import models
 
 class Disciplina(models.Model):
     id = models.AutoField(primary_key=True)
-    ime = models.TextField(null=False)
+    ime = models.TextField(null=False, unique=True)
 
 
 class OlimpijskeIgre(models.Model):
