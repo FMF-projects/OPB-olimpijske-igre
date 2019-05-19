@@ -19,4 +19,13 @@ class Tekmovalec(models.Model):
     ime = models.TextField(null=False)
     drzava = models.ForeignKey(Drzava, on_delete=models.CASCADE)
     rojstvo = models.DateField(null=True)
+
+class Rezultat(models.Model):
+    id = models.AutoField(primary_key=True)
+    ime = models.ForeignKey(Tekmovalec, on_delete=models.CASCADE)
+    disciplina = models.ForeignKey(Disciplina, related_name='Ime', null=True, on_delete=models.CASCADE)
+    mesto = models.IntegerField(null=True)
+    rezultat = models.IntegerField(null=True)
+    olimpijske_igre = models.ForeignKey(OlimpijskeIgre, on_delete=models.CASCADE)
+
     

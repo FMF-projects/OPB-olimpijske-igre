@@ -1,4 +1,4 @@
-from olympic_games.models import Drzava, Disciplina, OlimpijskeIgre, Tekmovalec
+from olympic_games.models import Drzava, Disciplina, OlimpijskeIgre, Tekmovalec, Rezultat
 import csv
 
 def zapisi_drzave():
@@ -39,8 +39,30 @@ def zapisi_tekmovalce():
         for row in reader:
             if row != [] and row[0] != 'ime':
                 ime, datum = row
-                t = Tekmovalec(ime=ime, rojstvo=datum)
-                t.save()
+                if type(ime[-1]) == int:
+                    t = Tekmovalec(ime=ime, rojstvo=datum)
+                    t.save()
+                else:
+                    t = Tekmovalec(ime=ime, rojstvo=datum)
+                    t.save() 
+
+def zapisi_rezultat():
+
+    with open('podatki/rezultati.csv', 'r', encoding='utf-8') as rezultati:
+        reader = csv.reader(rezultati)
+        for row in reader:
+            if row != [] and row[0] != 'igre':
+                igre, disciplina, mesto, ime, drzava, rezultat = row
+                mesto_iger = igre[:-4]
+                leto = int(igre[-4:])
+                if type(ime[-1]) == int:
+                    r = Rezultat(ime=ime[:-2],disciplina=disciplina, mesto=mesto, rezultat=rezultat, igre=leto)
+                    r.save()
+                else:
+                    r = Rezultat(ime=ime,disciplina=disciplina, mesto=mesto, rezultat=rezultat, igre=leto)
+                    r.save()
+
+
 
 
 
