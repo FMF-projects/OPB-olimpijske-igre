@@ -4,6 +4,9 @@ class Disciplina(models.Model):
     id = models.AutoField(primary_key=True)
     ime = models.TextField(null=False, unique=True)
 
+    def __str__(self):
+        return str(self.id) + ":" + self.ime
+
 
 class OlimpijskeIgre(models.Model):
     leto = models.IntegerField(primary_key=True)
@@ -17,8 +20,11 @@ class Drzava(models.Model):
 class Tekmovalec(models.Model):
     id = models.AutoField(primary_key=True)
     ime = models.TextField(null=False)
-    drzava = models.ForeignKey(Drzava, on_delete=models.CASCADE)
+    drzava = models.ForeignKey(Drzava, null=True, on_delete=models.CASCADE)
     rojstvo = models.DateField(null=True)
+
+    def __str__(self):
+        return str(self.id) + ":" + self.ime
 
 class Rezultat(models.Model):
     id = models.AutoField(primary_key=True)
