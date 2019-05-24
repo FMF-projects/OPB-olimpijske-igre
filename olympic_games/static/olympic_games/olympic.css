@@ -1,0 +1,20 @@
+body {
+  padding-bottom: 20px;
+  background-image: url(olympic_games.png);
+  background-size: cover;
+  background-position: top;
+  background-attachment: scroll;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+
