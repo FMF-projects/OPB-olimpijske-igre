@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'olimpijske.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'sem2019_klementinap',
+        'USER': 'javnost',
+        'PASSWORD': 'javnogeslo',
+        'HOST': 'baza.fmf.uni-lj.si',
+        'PORT': '5432',
     }
 }
 
@@ -119,3 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
