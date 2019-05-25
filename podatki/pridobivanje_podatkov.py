@@ -161,6 +161,7 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
     with open(str(datoteka), encoding='utf-8') as f:
         vsebina = f.read()
 
+        stevec = 0
         for tekmovalec in re.finditer(
             r'<tr>.+?<td class="col1">.+?<span class=".+?">(?P<mesto>.+?)</span>.+?<td class="col2">'
             r'.+?<div class="image">.+?<div class="flag45 (?P<drzava>.+?)">.+?<span class="mask"></span>'
@@ -178,6 +179,10 @@ def podatki_skupine(datoteka, olimpijske, disciplina):
                 mesto = '3.'
             mesto = mesto.strip(".")
             mesto = mesto.strip("\n")
+
+            stevec += 1
+            if str(stevec) != mesto or mesto == '':
+                continue
 
             drzava = tekmovalec.group('drzava')
             drzava = drzava.replace("-", " ")
