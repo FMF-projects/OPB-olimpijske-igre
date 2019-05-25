@@ -1,44 +1,18 @@
+{% extends "olympic_games/base.html" %}
 {% load static %}
+<link rel="stylesheet" href="{% static 'olympic_games/olympic.css' %}">
 
-<link rel="stylesheet" type="text/css" href="{% static 'olympic_games/home.css' %}">
+{% block title %}
 
-<div>
-  <header>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Olympic games</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarsExample04">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'olymipic_games:home' %}">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Statistics</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Results</a>
-            <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="#">Discipline</a>
-              <a class="dropdown-item" href="#">Athlets</a>
-            </div>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-md-0">
-          <input class="form-control" type="text" placeholder="Search">
-        </form>
-      </div>
-    </nav>
-  </header>
+Home
 
-  <main role="main" class="inner cover">
-    <h1 class="cover-heading"></h1>
-    <p class="lead"></p>
-  </main>
+{% endblock %}
 
-  <footer class="mastfoot mt-auto">
-  </footer>
+{% block content %}
 
-</div>
+<h1>
+  Olympic Games
+</h1>
+
+{% endblock %}
 
