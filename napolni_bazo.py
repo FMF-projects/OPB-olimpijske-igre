@@ -12,7 +12,6 @@ def zapisi_drzave():
                 d.save()
 
 def zapisi_discipline_in_olimpijske():
-
     with open('podatki/rezultati.csv', 'r', encoding='utf-8') as rezultati:
         reader = csv.reader(rezultati)
         for row in reader:
@@ -35,11 +34,17 @@ def zapisi_discipline_in_olimpijske():
                     mesto_iger = " "
 
 def zapisi_tekmovalce():
-
+    drz = Drzava.objects.all()
+    for w in drz:
+        print(w.ime)
+        t = Tekmovalec(ime=w.ime, drzava=w)
+        t.save()
+    
     with open('podatki/roj_dan_tekmovalcev.csv', 'r', encoding='utf-8') as tekmovalci:
         reader = csv.reader(tekmovalci)
         for row in reader:
             if row != [] and row[0] != 'ime':
+                print(row)
                 ime, datum = row
                 if datum == "":
                     t = Tekmovalec(ime=ime)
@@ -50,40 +55,49 @@ def zapisi_tekmovalce():
                     t.save() 
 
 def zapisi_rezultat():
-
     tekmovalci = {}
     discipline = {}
-
+    igre = {}
+    drzave = {}
     tekm = Tekmovalec.objects.all()
-    for i in enumerate(tekm):
-        print("ha")
-        #tekmovalci[i.ime] = i.id
+    for x in tekm:
+        tekmovalci[x.ime] = x
     disc = Disciplina.objects.all()
-    for j in enumerate(disc):
-        print("hah")
-        #discipline[j.ime] = j.id
-
-    # with open('podatki/rezultati.csv', 'r', encoding='utf-8') as rezultati:
-    #     reader = csv.reader(rezultati)
-    #     for row in reader:
-    #         if row != [] and row[0] != 'igre':
-    #             igre, disciplina, mesto, ime, drzava, rezultat = row
-    #             mesto_iger = igre[:-4]
-    #             leto = int(igre[-4:])
-    #             # if type(ime[-1]) == int:
-    #             #     r = Rezultat(ime=ime[:-2],disciplina=disciplina, mesto=mesto, rezultat=rezultat, igre=leto)
-    #             #     r.save()
-    #             # else:
-    #             #     r = Rezultat(ime=ime,disciplina=disciplina, mesto=mesto, rezultat=rezultat, igre=leto)
-    #             #     r.save()
-
-
-
-
+    for y in disc:
+        discipline[y.ime] = y
+    igr = OlimpijskeIgre.objects.all()
+    for z in igr:
+        igre[z.leto] = z
+    drz = Drzava.objects.all()
+    for w in drz:
+        drzave[w.kratica] = w
+    with open('podatki/rezultati.csv', 'r', encoding='utf-8') as rezultati:
+        reader = csv.reader(rezultati)
+        for row in reader:
+            if row != [] and row[0] != 'igre':
+                print(row)
+                if len(row) == 1:
+                    ig, disciplina, mesto, ime, drzava, rezultat = row[0].split(',')[:6]
+                else:
+                    ig, disciplina, mesto, ime, drzava, rezultat = row
+                if mesto == "":
+                    mesto = 0
+                if ime != "": 
+                    t = tekmovalci[ime]
+                    d = discipline[disciplina]
+                    i = igre[int(ig[-4:])]
+                    r = Rezultat(ime=t,disciplina=d, mesto=mesto, rezultat=rezultat, olimpijske_igre=i)
+                    r.save()
+                else: #imamo skupinsko disciplino
+                    ime = drzave[drzava]
+                    print(ime)
+                    t = tekmovalci[ime.ime]
+                    print(t)
+                    d = discipline[disciplina]
+                    i = igre[int(ig[-4:])]
+                    r = Rezultat(ime=t,disciplina=d, mesto=mesto, rezultat=rezultat, olimpijske_igre=i)
+                    r.save()
 
 #zapisi_drzave()
-#zapisi_discipline_in_olimpijske()
 #zapisi_tekmovalce()
-zapisi_rezultat()
-
-
+#zapisi_rezultat()
