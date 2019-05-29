@@ -1,0 +1,35 @@
+{% extends "olympic_games/base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'olympic_games/olympic.css' %}">
+{% block title %}
+
+
+Results
+
+{% endblock %}
+
+{% block content %}
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Year
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" type="button">2016</button>
+    <button class="dropdown-item" type="button">2012</button>
+    <button class="dropdown-item" type="button">2008</button>
+  </div>
+</div> 
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Discipline
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+    <button class="dropdown-item" type="button">100m men</button>
+    <button class="dropdown-item" type="button">100m women</button>
+  </div>
+</div>
+
+{% endblock %}
+

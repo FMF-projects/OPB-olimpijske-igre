@@ -5,5 +5,5 @@ from . import views
 app_name = 'olymipic_games'
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='home'),
-    path('results/', views.ResultsDisciplinePageView.as_view(), name='results_by_discipline')
+    path('results/', views.ResultsDisciplinePageView.as_view(), name='results')
 ]

@@ -1,6 +1,6 @@
 body {
   padding-bottom: 20px;
-  background-image: url(olympic_games.png);
+  background-image: url(olympic_games_60.png);
   background-size: cover;
   background-position: top;
   background-attachment: scroll;
@@ -23,5 +23,9 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
+#year {
+  width: 100px;
+  height: 50px;
+}
 
 
