@@ -11,7 +11,7 @@ class HomePageView(generic.base.TemplateView):
     template_name = 'olympic_games/home.html'
 
 class ResultsDisciplinePageView(generic.base.TemplateView):
-    template_name = 'olympic_games/results_by_discipline.html'
+    template_name = 'olympic_games/results_discipline.html'
 
 
 
