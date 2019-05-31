@@ -10,24 +10,34 @@ Results
 
 {% block content %}
 
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Year
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <button class="dropdown-item" type="button">2016</button>
-    <button class="dropdown-item" type="button">2012</button>
-    <button class="dropdown-item" type="button">2008</button>
-  </div>
-</div> 
+<div class="container">
+  <div class="row">
+    <div class="col text-center">
+      <div class="dropdown">
+        <button class="btn btn-info dropdown-toggle btn-lg" type="button" id="dropdown-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Year
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button class="dropdown-item" type="button">2016</button>
+          <button class="dropdown-item" type="button">2012</button>
+          <button class="dropdown-item" type="button">2008</button>
+        </div>
+      </div> 
 
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Discipline
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-    <button class="dropdown-item" type="button">100m men</button>
-    <button class="dropdown-item" type="button">100m women</button>
+      <div class="dropdown">
+        <button class="btn btn-info dropdown-toggle btn-lg" type="button"
+        id="dropdown-discipline" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Discipline
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button class="dropdown-item" type="button">100m men</button>
+          <button class="dropdown-item" type="button">3000m steeplechase women</button>
+        </div>
+      </div>
+
+      <a class="btn btn-success" id="results-button" href="#" role="button">Results</a>
+
+    </div>
   </div>
 </div>
 
