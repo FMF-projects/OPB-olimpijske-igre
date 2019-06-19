@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="{% static 'olympic_games/olympic.css' %}">
 {% block title %}
 
-
 Results
 
 {% endblock %}
@@ -13,29 +12,32 @@ Results
 <div class="container">
   <div class="row">
     <div class="col text-center">
-      <div class="dropdown">
-        <button class="btn btn-info dropdown-toggle btn-lg" type="button" id="dropdown-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Year
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item" type="button">2016</button>
-          <button class="dropdown-item" type="button">2012</button>
-          <button class="dropdown-item" type="button">2008</button>
-        </div>
-      </div> 
 
-      <div class="dropdown">
-        <button class="btn btn-info dropdown-toggle btn-lg" type="button"
-        id="dropdown-discipline" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Discipline
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-          <button class="dropdown-item" type="button">100m men</button>
-          <button class="dropdown-item" type="button">3000m steeplechase women</button>
-        </div>
-      </div>
+    <div class="form-group">
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option selected> Select year of Olympic Games </option>
+        {% for y in leto %}
+          <option> {{y}} </option>
+        {% empty %}
+          <option> Empty </option>
+        {% endfor %}
+      </select>
+    </div>
 
-      <a class="btn btn-success" id="results-button" href="#" role="button">Results</a>
+
+    <div class="form-group">
+      <select class="form-control" id="exampleFormControlSelect1">
+        <option selected> Select Discipline </option>
+        {% for d in disciplina %}
+          <option> {{d}} </option>
+        {% empty %}
+          <option> Empty </option>
+        {% endfor %}
+      </select>
+    </div>
+
+
+      <a class="btn" id="results-button" href="#" role="button">Results</a>
 
     </div>
   </div>
