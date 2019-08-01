@@ -24,7 +24,6 @@ Results
       </select>
     </div>
 
-
     <div class="form-group">
       <select class="form-control" id="select-discipline">
         <option selected> Select Discipline </option>
@@ -37,7 +36,25 @@ Results
     </div>
 
 
-      <a class="btn" id="results-button" href="#" role="button">Results</a>
+    <script>
+        var year
+        var discipline
+        var text_year
+        var text_discipline
+    
+        function get_results() {
+          year = document.getElementById('select-year');
+          text_year = year.options[year.selectedIndex].text;
+
+          discipline = document.getElementById('select-discipline');
+          text_discipline = discipline.options[discipline.selectedIndex].text;
+
+          console.log(text_year);
+          console.log(text_discipline);
+        }
+      </script>
+
+    <a class="btn" id="results-button" onclick="get_results()" role="button">Results</a>
 
     </div>
   </div>
