@@ -17,7 +17,7 @@ Results
       <select class="form-control" id="select-year">
         <option selected> Select year of Olympic Games </option>
         {% for y in leto %}
-          <option> {{y}} </option>
+          <option value="{{y}}"> {{y}} </option>
         {% empty %}
           <option> Empty </option>
         {% endfor %}
@@ -29,7 +29,7 @@ Results
       <select class="form-control" id="select-discipline">
         <option selected> Select Discipline </option>
         {% for d in disciplina %}
-          <option> {{d}} </option>
+          <option value="{{d}}"> {{d}} </option>
         {% empty %}
           <option> Empty </option>
         {% endfor %}

@@ -20,6 +20,18 @@ class ResultsPageView(generic.base.TemplateView):
         context = {"leto": leto, "disciplina": disciplina}
         return render(request, 'olympic_games/results.html', context=context)
 
+def detail(request, leto, disciplina):
+    list_of_results = Rezultat.objects.filter(disciplina=disciplina, olimpijske_igre=leto).order_by("mesto")
+    template_name = loader.get_template('write_out_results.html')
+    context = {
+        'list_of_results': list_of_results
+    }
+    return render(request, template_name, context)
+
+
+
+
+
     
 
 
