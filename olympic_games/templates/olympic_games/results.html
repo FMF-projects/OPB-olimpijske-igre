@@ -7,54 +7,52 @@ Results
 
 {% endblock %}
 
+
 {% block content %}
 
 <div class="container">
   <div class="row">
     <div class="col text-center">
 
-    <div class="form-group">
-      <select class="form-control" id="select-year">
-        <option selected> Select year of Olympic Games </option>
-        {% for y in leta %}
-          <option value="{{y}}"> {{y}} </option>
-        {% empty %}
-          <option> Empty </option>
-        {% endfor %}
-      </select>
-    </div>
+      <div class="form-group">
+        <select class="form-control" id="select-year">
+          <option selected> Select year of Olympic Games </option>
+          {% for y in leta %}
+            <option value="{{y}}"> {{y}} </option>
+          {% empty %}
+            <option> Empty </option>
+          {% endfor %}
+        </select>
+      </div>
 
-    <div class="form-group">
-      <select class="form-control" id="select-discipline">
-        <option selected> Select Discipline </option>
-        {% for d in discipline %}
-          <option value="{{d}}"> {{d}} </option>
-        {% empty %}
-          <option> Empty </option>
-        {% endfor %}
-      </select>
-    </div>
+      <div class="form-group">
+        <select class="form-control" id="select-discipline">
+          <option selected> Select Discipline </option>
+          {% for d in discipline %}
+            <option value="{{d}}"> {{d}} </option>
+          {% empty %}
+            <option> Empty </option>
+          {% endfor %}
+        </select>
+      </div>
 
-
-    <script>
+      <script>
         var year
         var discipline
         var text_year
         var text_discipline
-    
-        function get_results() {
+      
+        function getUrl() {
           year = document.getElementById('select-year');
           text_year = year.options[year.selectedIndex].text;
 
           discipline = document.getElementById('select-discipline');
           text_discipline = discipline.options[discipline.selectedIndex].text;
-
-          console.log(text_year);
-          console.log(text_discipline);
+          return text_year + "/" + text_discipline + "/";
         }
       </script>
 
-    <a class="btn" id="results-button" onclick="get_results()" role="button">Results</a>
+      <a class="btn" id="results-button" href="javascript:document.location.href=getUrl();" role="button">Results</a> 
 
     </div>
   </div>

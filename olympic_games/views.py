@@ -11,13 +11,8 @@ from .models import Disciplina, OlimpijskeIgre, Drzava, Tekmovalec, Rezultat
 class HomePageView(generic.base.TemplateView):
     template_name = 'olympic_games/home.html'
 
-class ResultsPageView(generic.base.TemplateView):
+class SearchResultsPageView(generic.base.TemplateView):
     template_name = 'olympic_games/results.html'
-
-    def rezultat(self, leto, disciplina):
-        disc = Disciplina.objects.filter(ime=disciplina)[0].id
-        rezultati = Rezultat.objects.filter(olimpijske_igre=leto, disciplina=disc)
-        return rezultati.order_by('mesto')
 
     def get(self, request):
         leta = OlimpijskeIgre.objects.all().order_by('-leto')
@@ -25,13 +20,14 @@ class ResultsPageView(generic.base.TemplateView):
         context = {"leta": leta, "discipline": discipline}
         return render(request, 'olympic_games/results.html', context=context)
 
-def detail(request, leto, disciplina):
-    list_of_results = Rezultat.objects.filter(disciplina=disciplina, olimpijske_igre=leto).order_by("mesto")
-    template_name = loader.get_template('write_out_results.html')
+
+def get_results(request, year, discipline):
+    disc = Disciplina.objects.filter(ime=discipline)[0].id
+    results = Rezultat.objects.filter(disciplina=disc, olimpijske_igre=year).order_by("mesto")
     context = {
-        'list_of_results': list_of_results
+        'results': results
     }
-    return render(request, template_name, context)
+    return render(request, 'olympic_games/write_out_results.html', context=context)
 
 
 
