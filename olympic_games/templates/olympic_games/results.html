@@ -15,9 +15,9 @@ Results
 
     <div class="form-group">
       <select class="form-control" id="exampleFormControlSelect1">
-        <option selected> Select year of Olympic Games </option>
+        <option class="default"> Select year of Olympic Games </option>
         {% for y in leto %}
-          <option> {{y}} </option>
+          <option value="{{y}}"> {{y}} </option>
         {% empty %}
           <option> Empty </option>
         {% endfor %}
@@ -27,9 +27,9 @@ Results
 
     <div class="form-group">
       <select class="form-control" id="exampleFormControlSelect1">
-        <option selected> Select Discipline </option>
+        <option class="default"> Select Discipline </option>
         {% for d in disciplina %}
-          <option> {{d}} </option>
+          <option value="{{d}}"> {{d}} </option>
         {% empty %}
           <option> Empty </option>
         {% endfor %}
