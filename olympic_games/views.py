@@ -14,10 +14,15 @@ class HomePageView(generic.base.TemplateView):
 class ResultsPageView(generic.base.TemplateView):
     template_name = 'olympic_games/results.html'
 
+    def rezultat(self, leto, disciplina):
+        rezultati = Rezultat(olimpijske_igre=leto, disciplina=disciplina)
+        return rezultati.objects
+
     def get(self, request):
-        leto = OlimpijskeIgre.objects.all().order_by('-leto')
-        disciplina = Disciplina.objects.all().order_by('ime')
-        context = {"leto": leto, "disciplina": disciplina}
+        leta = OlimpijskeIgre.objects.all().order_by('-leto')
+        discipline = Disciplina.objects.all().order_by('ime')
+        
+        context = {"leta": leta, "discipline": discipline}
         return render(request, 'olympic_games/results.html', context=context)
 
 def detail(request, leto, disciplina):
