@@ -24,8 +24,22 @@ class SearchResultsPageView(generic.base.TemplateView):
 def get_results(request, year, discipline):
     disc = Disciplina.objects.filter(ime=discipline)[0].id
     results = Rezultat.objects.filter(disciplina=disc, olimpijske_igre=year).order_by("mesto")
+    rez = []
+    oseba = []
+    for i in str(results).split(' ')[1:]:
+        if i == '<Rezultat:' or i == '[<Rezultat:':
+            oseba = []
+        if i[-1] == '>' or i[-1] == ',':
+            if i[-1] == '>':
+                oseba.append(i[:-3])
+            else:
+                oseba.append(i[:-2])
+            rez.append(oseba[1:])
+            oseba = []
+        else:
+            oseba.append(i)
     context = {
-        'results': results
+        'results': rez
     }
     return render(request, 'olympic_games/write_out_results.html', context=context)
 

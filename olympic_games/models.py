@@ -47,3 +47,6 @@ class Rezultat(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['olimpijske_igre', 'disciplina', 'ime', 'mesto'], name='rezultat')
         ]
+
+    def __str__(self):
+        return str(self.mesto) + " " + self.ime.ime + " " + str(self.rezultat)
