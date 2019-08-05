@@ -9,13 +9,38 @@ Results
 
 {% block content %}
 
-<ol>
-    {% for rezultat in results %}
-        <li>{{ rezultat }}</li>
-    {% endfor %}
-</ol>
-
-
+<div class="table-of-results">
+  <table class="table table-hover"> 
+    <thead class="thead-dark"> 
+      <tr>
+        <th>
+          Mesto
+        </th>
+        <th>
+          Tekmovalec
+        </th>
+        <th>
+          Rezultat
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rezultat in results %}
+          <tr>
+            <td>
+              {{rezultat.mesto}}
+            </td>
+            <td>
+              {{rezultat.ime.ime}}
+            </td>
+            <td>
+              {{rezultat.rezultat}}
+            </td>
+          </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 
 {% endblock %}
